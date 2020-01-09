@@ -1,5 +1,0 @@
-﻿  Planet.cpp
-C:\Users\Alumno\Desktop\SistemaSolar\code\Planet.cpp(40,20): warning C4244:  'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Alumno\Desktop\SistemaSolar\code\Planet.cpp(60,26): warning C4244:  '=': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Alumno\Desktop\SistemaSolar\code\Planet.cpp(72,21): warning C4244:  'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
-  SFML-BaseProject.vcxproj -> C:\Users\Alumno\Desktop\SistemaSolar\projects\vs-2019\x64\Debug\SFML-BaseProject.exe
