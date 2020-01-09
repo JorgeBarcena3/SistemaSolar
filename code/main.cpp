@@ -16,45 +16,46 @@
 using namespace sf;
 using namespace SolarSystem;
 
-int main ()
+int main()
 {
-    RenderWindow window(VideoMode(800, 600), "Animation Examples: Transformations", sf::Style::Default, ContextSettings(32));
+	RenderWindow window(VideoMode(800, 600), "Animation Examples: Transformations", sf::Style::Default, ContextSettings(32));
 
-    window.setVerticalSyncEnabled (true);
+	window.setVerticalSyncEnabled(true);
 
-    bool running = true;
+	bool running = true;
 
-    Planet2D model(100,30);
+	Planet2D * Sol = new Planet2D(100, nullptr, 16);
+	Sol->set_position(400, 300);
 
-	model.set_position      (100,  100);
-	model.set_angular_speed (0.01f    );
-	model.set_linear_speed  (.5f, .25f);
+	Planet2D * tierra = new Planet2D(50, Sol, 16);
+	tierra->set_position(600, 300);
+	tierra->rotationSpeed = (1);
+	
 
-    do
-    {
-        // Process window events:
+	do
+	{
+		// Process window events:
 
-        Event event;
+		Event event;
 
-        while (window.pollEvent (event))
-        {
-            if (event.type == Event::Closed)
-            {
-                running = false;
-            }
-        }
+		while (window.pollEvent(event))
+		{
+			if (event.type == Event::Closed)
+			{
+				running = false;
+			}
+		}
 
-		model.update (0);
+		Planet2D::nextFrame(0);
 
-        // Render:
+		// Render:
 
-        window.clear ();
+		window.clear();
 
-		model.render (window);
+		Planet2D::renderNextFrame(window);
 
-        window.display ();
-    }
-    while (running);
+		window.display();
+	} while (running);
 
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
