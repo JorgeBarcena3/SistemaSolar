@@ -25,8 +25,6 @@ Planet2D::Planet2D(float _radius, Planet2D* _center, int _vertex = 8) : Model2D(
 
 	transformed_vertices.resize(local_vertices.size());
 
-	lastAngle = 0;
-
 	Planet2D::instances.push_back(this);
 
 };

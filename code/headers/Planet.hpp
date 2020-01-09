@@ -38,9 +38,7 @@ namespace SolarSystem
 
 		float radiusToCenter; //Radio desde el centro al que rota a la posicion del planeta
 
-		float lastAngle;
-
-		Vector2f initpos;
+		float translationSpeed; //Velocidad de translacion
 
 
     public:
@@ -51,6 +49,7 @@ namespace SolarSystem
 
 		void update(float delta);
 
+		/*inline void getTranslationSpeed()*/
 		static void nextFrame(float delta)
 		{
 			for (Planet2D * planet : instances)

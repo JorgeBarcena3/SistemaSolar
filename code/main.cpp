@@ -26,6 +26,7 @@ int main()
 
 	Planet2D * Sol = new Planet2D(100, nullptr, 16);
 	Sol->set_position(400, 300);
+	Sol->rotationSpeed = 1;
 
 	Planet2D * tierra = new Planet2D(50, Sol, 16);
 	tierra->set_position(600, 300);
