@@ -89,12 +89,12 @@
   <ItemGroup>
     <ClCompile Include="..\..\code\main.cpp" />
     <ClCompile Include="..\..\code\Model2D.cpp" />
-    <ClCompile Include="..\..\code\Planet.cpp" />
+    <ClCompile Include="..\..\code\Planet2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\code\headers\Algorithms.hpp" />
     <ClInclude Include="..\..\code\headers\Coordinates.hpp" />
-    <ClInclude Include="..\..\code\headers\Planet.hpp" />
+    <ClInclude Include="..\..\code\headers\Planet2D.hpp" />
     <ClInclude Include="..\..\code\headers\macros.hpp" />
     <ClInclude Include="..\..\code\headers\Matrix.hpp" />
     <ClInclude Include="..\..\code\headers\Model2D.hpp" />

@@ -38,7 +38,7 @@ namespace SolarSystem
         ConvexShape sfml_polygon;
 
         sfml_polygon.setPointCount (number_of_vertices);
-        sfml_polygon.setFillColor  (Color::Yellow);
+        sfml_polygon.setFillColor  (polygonColor);
 
         for (int i = 0; i < number_of_vertices; i++)
         {

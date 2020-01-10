@@ -12,97 +12,108 @@
 #ifndef MODEL2D_HEADER
 #define MODEL2D_HEADER
 
-	#include <vector>
-	#include "Point.hpp"
-	#include "Vector.hpp"
+#include <vector>
+#include "Point.hpp"
+#include "Vector.hpp"
+#include <SFML\Graphics\Color.hpp>
 
-	namespace sf { class RenderWindow; }
+using namespace toolkit;
+namespace sf { class RenderWindow; }
 
-	namespace SolarSystem
-	{
+namespace SolarSystem
+{
 
-		using toolkit::Point3f;
-		using toolkit::Vector2f;
+    using toolkit::Point3f;
+    using toolkit::Vector2f;
 
-		class Model2D
-		{
+    class Model2D
+    {
 
-        public: 
+    public:
 
-			typedef std::vector< Point3f > Vertex_Buffer;
+        typedef std::vector< Point3f > Vertex_Buffer;
 
-			// Buffers de vértices:
+        // Buffers de vértices:
 
-			Vertex_Buffer local_vertices;
-			Vertex_Buffer transformed_vertices;
+        Vertex_Buffer local_vertices;
+        Vertex_Buffer transformed_vertices;
 
-			// Atributos de transformación:
+        // Atributos de transformación:
 
-			Vector2f	  position;
-			float		  angle;
-			float		  scale;
+        Vector2f	  position;
+        float		  angle;
+        float		  scale;
 
-			// Atributos de animación:
+        // Atributos de animación:
 
-			Vector2f	  linear_speed;
-			float        angular_speed;
+        Vector2f	  linear_speed;
+        float         angular_speed;
+        sf::Color         polygonColor;
 
-		public:
 
-			Model2D(const std::vector< Point3f > & points)
-			{
-				local_vertices.reserve (points.size ());
-				
-				for (auto & point : points)
-				{
-					local_vertices.push_back (point);
-				}
+    public:
 
-				transformed_vertices.resize (local_vertices.size ());
+        Model2D(const std::vector< Point3f >& points)
+        {
+            local_vertices.reserve(points.size());
 
-				set_position (0, 0);
-				set_angle    (0);
-				set_scale    (1);
+            for (auto& point : points)
+            {
+                local_vertices.push_back(point);
+            }
 
-				set_linear_speed  (0, 0);
-				set_angular_speed (0);
-			}
+            transformed_vertices.resize(local_vertices.size());
 
-			void set_position (float x, float y)
-			{
-				position = Vector2f({ x, y });
-			}
+            set_position(0, 0);
+            set_angle(0);
+            set_scale(1);
 
-			void set_angle (float new_angle)
-			{
-				angle = new_angle;
-			}
+            set_linear_speed(0, 0);
+            set_angular_speed(0);
 
-			void set_scale (float new_scale)
-			{
-				scale = new_scale;
-			}
+            set_color(sf::Color::Red);
+        }
 
-			void set_linear_speed (float speed_x, float speed_y)
-			{
-				linear_speed = Vector2f({ speed_x, speed_y });
-			}
+        void set_position(float x, float y)
+        {
+            position = Vector2f({ x, y });
+        }
 
-			void set_angular_speed (float speed)
-			{
-				angular_speed = speed;
-			}
+        void set_angle(float new_angle)
+        {
+            angle = new_angle;
+        }
 
-			void update(float delta)
-			{
-				position +=  linear_speed;
-				angle    += angular_speed;
-			}
+        void set_scale(float new_scale)
+        {
+            scale = new_scale;
+        }
 
-			void render(sf::RenderWindow & renderer);
+        void set_color(sf::Color new_color)
+        {
+            polygonColor = new_color;
+        }
 
-		};
+        void set_linear_speed(float speed_x, float speed_y)
+        {
+            linear_speed = Vector2f({ speed_x, speed_y });
+        }
 
-	}
+        void set_angular_speed(float speed)
+        {
+            angular_speed = speed;
+        }
+
+        void update(float delta)
+        {
+            position += linear_speed;
+            angle += angular_speed;
+        }
+
+        void render(sf::RenderWindow& renderer);
+
+    };
+
+}
 
 #endif
