@@ -30,6 +30,10 @@ namespace SolarSystem
         static std::vector<Planet2D*> instances;              //Instancias de los planetas
 
         float                         radius;                 //Radio
+
+        float                         radiusX;                //Radio de X
+
+        float                         radiusY;                //Radio de Y
                                       
         int                           vertex;                 //Numero de vertices
                                       
@@ -38,6 +42,8 @@ namespace SolarSystem
         std::vector< Point3f >        orbitPoints;            //Puntos que se pintaran sobre la orbita
                                       
         Planet2D*                     center;                 //Centro sobre el que rota
+
+        Vector2f                      offset;                  //Offset del cetntro
                                       
         float                         radiusToCenter;         //Radio desde el centro al que rota a la posicion del planeta
                                       
@@ -49,21 +55,23 @@ namespace SolarSystem
 
 
 
+
     public:
 
         /*
         * Contructor que recibe los parametros de como va a ser el planeta en cuestion
         */
         Planet2D(
-            float     radius,                           //Radio
-            float     angularSpeed,                     //Velocidad de giro sobre si mismo
-            sf::Color color,                            //Color
-            Planet2D* center,                           //Centro sobre el que gira
-            float     radiusToCenter,                   //Distancia de ese centro
-            float     translationSpeed,                 //Velocidad de translacion
-            bool      rotationDirectionClock,           //Direccion
-            int       vertex                            //Numero de vertices
-        );      
+            float              radius                                                  ,//Radio
+            float              angularSpeed                                            ,//Velocidad de giro sobre si mismo
+            sf::Color          color                                                   ,//Color
+            Planet2D*         _center                  = nullptr                       ,//Centro sobre el que gira
+            toolkit::Vector2f _offset                  = toolkit::Vector2f({ 0,0 })    ,//Offset del centro
+            float             _radiusToCenter          = 0                             ,//Distancia de ese centro
+            float             _translationSpeed        = 1                             ,//Velocidad de translacion
+            bool              _rotationDirectionClock  = true                          ,//Direccion
+            int               _vertex                  = 16                            )//Numero de vertices
+        ;      
 
         /*
         * Divide la esfera en vertices de igual distancia
@@ -74,6 +82,11 @@ namespace SolarSystem
         * Divide la esfera en vertices de igual distancia
         */
         void setListOfOrbit();
+
+        /*
+        * Organiza el orden de dibujo
+        */
+        void setDrawOrder(int layer);
         
         /*
         * Busca la siguiente posicion del planeta
@@ -107,10 +120,11 @@ namespace SolarSystem
         */
         static void Render(sf::RenderWindow& renderer)
         {
-            for (Planet2D* planet : instances)
+            for (int i = (int)instances.size() - 1; i >= 0; --i)
             {
-                planet->renderOrbit(renderer);
-                planet->render(renderer);
+                
+                instances[i]->renderOrbit(renderer);
+                instances[i]->render(renderer);
             }
         };
 

@@ -51,7 +51,7 @@ namespace SolarSystem
         Vector2f	  linear_speed;
         float         angular_speed;
         sf::Color     polygonColor;
-        sf::Texture*     tx;
+        sf::Texture*  tx;
 
 
 

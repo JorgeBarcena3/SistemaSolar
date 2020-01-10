@@ -18,24 +18,38 @@
 using namespace SolarSystem;
 using namespace sf;
 
+
 //Inicializacion de la lista de planetas
 std::vector<Planet2D*> Planet2D::instances = {};
 
 /*
 * Contructor que recibe los parametros de como va a ser el planeta en cuestion
 */
-Planet2D::Planet2D(float _radius, float _angularSpeed, sf::Color _color, Planet2D* _center, float _radiusToCenter = 0, float _translationSpeed = 1, bool _rotationDirectionClock = true, int _vertex = 8) : Model2D({ })
+Planet2D::Planet2D(
+    float             _radius                  ,  
+    float             _angularSpeed            , 
+    sf::Color         _color                   , 
+    Planet2D*         _center                  ,
+    toolkit::Vector2f _offset                  , 
+    float             _radiusToCenter          , 
+    float             _translationSpeed        , 
+    bool              _rotationDirectionClock  , 
+    int               _vertex                  ) 
+    : Model2D({ })
 {
 
     radius                 = _radius;                   // Radio
     vertex                 = _vertex;                   // Numero de vertices
     radiusToCenter         = _radiusToCenter;           // Distancia del punto al que rota
     translationAngle       = 0;                         // Angulo de translacion
-    rotationDirectionClock = _rotationDirectionClock;   //Sentido de rotacion
-    angular_speed          = _angularSpeed;             //Velocidad de rotacion sobre si misma
-    set_color              (  _color                 ); //Color que adopta
-    center                 = _center;                   //Centro sobre el que orbita
-    translationSpeed       = _translationSpeed;         //Velocidad de translacion
+    rotationDirectionClock = _rotationDirectionClock;   // Sentido de rotacion
+    angular_speed          = _angularSpeed;             // Velocidad de rotacion sobre si misma
+    set_color              (  _color                 ); // Color que adopta
+    center                 = _center;                   // Centro sobre el que orbita
+    translationSpeed       = _translationSpeed;         // Velocidad de translacion
+    offset                 = _offset;                   // Correccacion de posicion respecto al centro
+    radiusX                 = radiusToCenter;           // Radio X para pintar la elipsis
+    radiusY                 = radiusToCenter * 0.5f;    // Radio Y para pintar la elipsis
 
 	setListOfPolygons(); // Creamos la esfera basandonos en los vertices
 
@@ -64,14 +78,14 @@ Planet2D::Planet2D(float _radius, float _angularSpeed, sf::Color _color, Planet2
 void Planet2D::setListOfPolygons()
 {
 
-	double vertexAngle  = PI2 / vertex;                 // Division de la esfera en X radianes
+	float vertexAngle  = (float)( PI2 / vertex );       // Division de la esfera en X radianes
            spherePoints = {};                           // Puntos de la esfera
 
 	for (int i = 0; i < vertex; ++i)
 	{
 
-		float x = cos(vertexAngle * i) * radius;
-		float y = sin(vertexAngle * i) * radius;
+		float x = cosf(vertexAngle * i) * radius;
+		float y = sinf(vertexAngle * i) * radius;
 		spherePoints.push_back(Point3f({ x, y, 1 }));
 
 
@@ -88,25 +102,40 @@ void Planet2D::setListOfOrbit()
     if (center != nullptr) //Si no tiene centro sobre el que girar no se calcula su orbita
     {
         float numberOfVertex = radiusToCenter / 2;
-        double vertexAngle = PI2 / numberOfVertex;    // Division de la esfera en X radianes
+        float vertexAngle = (float (PI2 / numberOfVertex ));    // Division de la esfera en X radianes
 
-        if(center->center != nullptr || orbitPoints.size() == 0) //Si su padre es un planeta o no se ha calculado la orbita anteriormente
+        if (center->center != nullptr || orbitPoints.size() == 0) //Si su padre es un planeta o no se ha calculado la orbita anteriormente
         {
             orbitPoints = {};                             // Puntos de la esfera
 
             for (int i = 0; i < numberOfVertex; ++i)
             {
 
-                float x = center->position[0] + cos(vertexAngle * i) * radiusToCenter;
-                float y = center->position[1] + sin(vertexAngle * i) * radiusToCenter;
+                float x = center->position[0] + cosf(vertexAngle * i) * radiusX;
+                float y = center->position[1] + sinf(vertexAngle * i) * radiusY;
 
-                orbitPoints.push_back(Point3f({ x, y, 1 }));
+                orbitPoints.push_back(Point3f({ x + offset[0], y + offset[1] , 1 }));
 
 
             }
         }
     }
 };
+
+/*
+* Organiza el orden de dibujo
+*/
+void SolarSystem::Planet2D::setDrawOrder(int layer)
+{
+    auto it        = std::find    (Planet2D::instances.begin(), Planet2D::instances.end(), this);
+    int index      = (int)std::distance(Planet2D::instances.begin(), it                             );
+
+    Planet2D::instances.erase (Planet2D::instances.begin() + index      );
+    Planet2D::instances.insert(Planet2D::instances.begin() + layer, this);
+
+};
+
+
 
 /*
 * Busca la siguiente posicion del planeta
@@ -117,13 +146,13 @@ void Planet2D::update(float delta)
 	if (center != nullptr) //Si no tiene centro sobre el que girar no se culcula su nueva posicion
     {
 
-              translationAngle += translationSpeed * rotationDirectionClock ? 1 : -1; // Angulo actual de translacion
-		float vertexAngle       = translationSpeed * translationAngle * RAD;                             // Angulo de tranlacion en radianes 
+              translationAngle += translationSpeed * rotationDirectionClock ? 1 : -1;         // Angulo actual de translacion
+		float vertexAngle       =(float)( translationSpeed * translationAngle * RAD ); // Angulo de tranlacion en radianes 
 
-		float x = center->position[0] + cos(vertexAngle) * radiusToCenter;
-		float y = center->position[1] + sin(vertexAngle) * radiusToCenter;
+        float x = center->position[0] + cosf(vertexAngle) * radiusX;
+        float y = center->position[1] + sinf(vertexAngle) * radiusY;
 
-		set_position(x, y); //Ajustamos la posicion
+		set_position( x + offset[0], y + offset[1] ); //Ajustamos la posicion
 	}
 
     setListOfOrbit();
