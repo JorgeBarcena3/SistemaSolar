@@ -59,5 +59,6 @@
     <ClInclude Include="..\..\code\headers\Planet2D.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\code\main.h" />
   </ItemGroup>
 </Project>

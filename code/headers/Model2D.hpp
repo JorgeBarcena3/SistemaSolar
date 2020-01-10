@@ -16,6 +16,8 @@
 #include "Point.hpp"
 #include "Vector.hpp"
 #include <SFML\Graphics\Color.hpp>
+#include <SFML/Graphics.hpp>
+
 
 using namespace toolkit;
 namespace sf { class RenderWindow; }
@@ -48,7 +50,9 @@ namespace SolarSystem
 
         Vector2f	  linear_speed;
         float         angular_speed;
-        sf::Color         polygonColor;
+        sf::Color     polygonColor;
+        sf::Texture*     tx;
+
 
 
     public:
@@ -72,6 +76,19 @@ namespace SolarSystem
             set_angular_speed(0);
 
             set_color(sf::Color::Red);
+
+                           
+
+        }
+
+        void setTexture(const char* path)
+        {
+            tx = new sf::Texture();
+
+            if (!tx->loadFromFile(path)) {
+                delete tx;
+                tx = nullptr;
+            }
         }
 
         void set_position(float x, float y)

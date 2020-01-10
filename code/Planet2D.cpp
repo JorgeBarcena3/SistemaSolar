@@ -87,7 +87,7 @@ void Planet2D::setListOfOrbit()
 
     if (center != nullptr) //Si no tiene centro sobre el que girar no se calcula su orbita
     {
-        float numberOfVertex = radius * 2;
+        float numberOfVertex = radiusToCenter / 2;
         double vertexAngle = PI2 / numberOfVertex;    // Division de la esfera en X radianes
 
         if(center->center != nullptr || orbitPoints.size() == 0) //Si su padre es un planeta o no se ha calculado la orbita anteriormente
