@@ -13,4 +13,4 @@ To implement this system, I have used C++ and the SFML library to create the exe
 
 ## Auto-executable file
 
-In the "executable" folder, you can find a file that will extract a folder. By executing the extracted file "Metaballs.exe", you can test the application in real time.
+In the "executable" folder, you can find a file that will extract a folder. By executing the extracted file "SFML-SistemaSolar.exe", you can test the application in real time.
